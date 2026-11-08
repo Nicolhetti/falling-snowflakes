@@ -15,13 +15,13 @@ Forked from [ernkerr/falling-leaves](https://github.com/ernkerr/falling-leaves),
 ## Install
 
 ```sh
-npm install falling-snowflakes
+npm install @nicolhetti/falling-snowflakes
 ```
 
 ## Vanilla JS
 
 ```js
-import { FallingSnowflakes } from 'falling-snowflakes';
+import { FallingSnowflakes } from '@nicolhetti/falling-snowflakes';
 
 // Covers the whole page
 const snow = new FallingSnowflakes();
@@ -40,7 +40,7 @@ const hero = new FallingSnowflakes({ container: document.querySelector('.hero') 
 ## React
 
 ```jsx
-import { FallingSnowflakes } from 'falling-snowflakes/react';
+import { FallingSnowflakes } from '@nicolhetti/falling-snowflakes/react';
 
 // Covers the whole page
 <FallingSnowflakes fullScreen />

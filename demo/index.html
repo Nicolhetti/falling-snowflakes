@@ -140,7 +140,7 @@
     <h1>falling<span>-</span>snowflakes</h1>
     <p class="lede">Snowflakes that drift, sway and slowly turn over as they fall down any web page, in four shapes. Works on its own or as a React component.</p>
     <div class="install">
-      <code id="install-cmd">npm i falling-snowflakes</code>
+      <code id="install-cmd">npm i @nicolhetti/falling-snowflakes</code>
       <button id="copy" type="button">Copy</button>
     </div>
   </header>
@@ -174,7 +174,7 @@
       <button role="tab" id="tab-js" aria-selected="true" type="button">JavaScript</button>
       <button role="tab" id="tab-react" aria-selected="false" type="button">React</button>
     </div>
-<pre id="code-js"><span class="k">import</span> { FallingSnowflakes } <span class="k">from</span> <span class="s">'falling-snowflakes'</span>;
+<pre id="code-js"><span class="k">import</span> { FallingSnowflakes } <span class="k">from</span> <span class="s">'@nicolhetti/falling-snowflakes'</span>;
 
 <span class="c">// Covers the whole page</span>
 <span class="k">const</span> snow = <span class="k">new</span> FallingSnowflakes({
@@ -185,7 +185,7 @@
 
 snow.update({ count: <span class="s">120</span> }); <span class="c">// change it live</span>
 snow.destroy();              <span class="c">// clean up</span></pre>
-<pre id="code-react" hidden><span class="k">import</span> { FallingSnowflakes } <span class="k">from</span> <span class="s">'falling-snowflakes/react'</span>;
+<pre id="code-react" hidden><span class="k">import</span> { FallingSnowflakes } <span class="k">from</span> <span class="s">'@nicolhetti/falling-snowflakes/react'</span>;
 
 <span class="k">export default function</span> App() {
   <span class="k">return</span> (
@@ -268,7 +268,7 @@ snow.destroy();              <span class="c">// clean up</span></pre>
         var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
         btn.textContent = 'Selected';
       };
-      try { navigator.clipboard.writeText('npm i falling-snowflakes').then(done, fallback); } catch (e) { fallback(); }
+      try { navigator.clipboard.writeText('npm i @nicolhetti/falling-snowflakes').then(done, fallback); } catch (e) { fallback(); }
     });
 
     function showTab(which) {

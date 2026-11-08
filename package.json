@@ -1,5 +1,5 @@
 {
-  "name": "falling-snowflakes",
+  "name": "@nicolhetti/falling-snowflakes",
   "version": "0.1.0",
   "description": "A lightweight, dependency-free canvas animation of falling snowflakes. Works with vanilla JS and React.",
   "keywords": [
@@ -15,10 +15,14 @@
     "seasonal"
   ],
   "license": "MIT",
-  "author": "Erin Kerr",
+  "author": "Nicolhetti",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Nicolhetti/falling-snowflakes.git"
+  },
+  "homepage": "https://nicolhetti.github.io/falling-snowflakes/",
+  "bugs": {
+    "url": "https://github.com/Nicolhetti/falling-snowflakes/issues"
   },
   "type": "module",
   "sideEffects": false,
@@ -50,6 +54,9 @@
   "files": [
     "dist"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
