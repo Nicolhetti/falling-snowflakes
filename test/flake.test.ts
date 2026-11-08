@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createLeaf, pick, stepLeaf, type MotionOptions } from '../src/leaf';
+import { createFlake, pick, stepFlake, type MotionOptions } from '../src/flake';
 
 // Small seeded random so tests are repeatable.
 function seeded(seed = 1) {
@@ -28,12 +28,12 @@ describe('pick', () => {
   });
 });
 
-describe('createLeaf', () => {
+describe('createFlake', () => {
   it('starts above the top unless asked to start anywhere', () => {
     const r = seeded();
     for (let i = 0; i < 50; i++) {
-      expect(createLeaf(opts, 800, 600, 4, r, false).y).toBeLessThan(0);
-      const anywhere = createLeaf(opts, 800, 600, 4, r, true);
+      expect(createFlake(opts, 800, 600, 4, r, false).y).toBeLessThan(0);
+      const anywhere = createFlake(opts, 800, 600, 4, r, true);
       expect(anywhere.y).toBeGreaterThanOrEqual(0);
       expect(anywhere.y).toBeLessThanOrEqual(600);
     }
@@ -41,61 +41,61 @@ describe('createLeaf', () => {
   it('only uses pictures that exist', () => {
     const r = seeded(7);
     for (let i = 0; i < 100; i++) {
-      const v = createLeaf(opts, 800, 600, 3, r, true).variant;
+      const v = createFlake(opts, 800, 600, 3, r, true).variant;
       expect(v).toBeGreaterThanOrEqual(0);
       expect(v).toBeLessThan(3);
     }
   });
 });
 
-describe('stepLeaf', () => {
-  it('moves a leaf down and spins it', () => {
+describe('stepFlake', () => {
+  it('moves a flake down and spins it', () => {
     const r = seeded(3);
-    const leaf = createLeaf(opts, 800, 600, 1, r, true);
-    leaf.y = 100;
-    const rotation = leaf.rotation;
-    stepLeaf(leaf, 1, opts, 800, 600, 1, r);
-    expect(leaf.y).toBeGreaterThan(100);
-    expect(leaf.rotation).toBeCloseTo(rotation + 1);
+    const flake = createFlake(opts, 800, 600, 1, r, true);
+    flake.y = 100;
+    const rotation = flake.rotation;
+    stepFlake(flake, 1, opts, 800, 600, 1, r);
+    expect(flake.y).toBeGreaterThan(100);
+    expect(flake.rotation).toBeCloseTo(rotation + 1);
   });
 
-  it('sends a leaf back to the top after it falls off the bottom', () => {
+  it('sends a flake back to the top after it falls off the bottom', () => {
     const r = seeded(4);
-    const leaf = createLeaf(opts, 800, 600, 1, r, true);
-    leaf.y = 700;
-    stepLeaf(leaf, 1, opts, 800, 600, 1, r);
-    expect(leaf.y).toBeLessThan(0);
+    const flake = createFlake(opts, 800, 600, 1, r, true);
+    flake.y = 700;
+    stepFlake(flake, 1, opts, 800, 600, 1, r);
+    expect(flake.y).toBeLessThan(0);
   });
 
-  it('wraps a leaf that blows off one side to the other side', () => {
+  it('wraps a flake that blows off one side to the other side', () => {
     const r = seeded(5);
     const windy = { ...opts, wind: 50 };
-    const leaf = createLeaf(windy, 800, 600, 1, r, true);
-    leaf.x = 820;
-    leaf.y = 100;
-    stepLeaf(leaf, 1, windy, 800, 600, 1, r);
-    expect(leaf.x).toBeLessThan(0);
+    const flake = createFlake(windy, 800, 600, 1, r, true);
+    flake.x = 820;
+    flake.y = 100;
+    stepFlake(flake, 1, windy, 800, 600, 1, r);
+    expect(flake.x).toBeLessThan(0);
   });
 
-  it('swings a light leaf further side to side and spins it less', () => {
+  it('swings a light flake further side to side and spins it less', () => {
     const swaying = { ...opts, sway: 2 };
-    const a = createLeaf(swaying, 800, 600, 1, seeded(11), true);
+    const a = createFlake(swaying, 800, 600, 1, seeded(11), true);
     a.x = 400;
     a.y = 100;
     a.swayPhase = Math.PI / 2;
     const b = { ...a };
-    stepLeaf(a, 1, swaying, 800, 600, 1, seeded(1));
-    stepLeaf(b, 1, swaying, 800, 600, 1, seeded(1), { sway: 2, swayFreq: 1, spin: 0.2, flip: 1, rock: 0 });
+    stepFlake(a, 1, swaying, 800, 600, 1, seeded(1));
+    stepFlake(b, 1, swaying, 800, 600, 1, seeded(1), { sway: 2, swayFreq: 1, spin: 0.2, flip: 1, rock: 0 });
     expect(Math.abs(b.x - 400)).toBeGreaterThan(Math.abs(a.x - 400) * 1.5);
     expect(b.rotation - a.rotation + 1).toBeCloseTo(0.2);
   });
 
   it('moves twice as far in a frame twice as long', () => {
-    const a = createLeaf(opts, 800, 600, 1, seeded(9), true);
+    const a = createFlake(opts, 800, 600, 1, seeded(9), true);
     a.y = 100;
     const b = { ...a };
-    stepLeaf(a, 1, opts, 800, 600, 1, seeded(1));
-    stepLeaf(b, 2, opts, 800, 600, 1, seeded(1));
+    stepFlake(a, 1, opts, 800, 600, 1, seeded(1));
+    stepFlake(b, 2, opts, 800, 600, 1, seeded(1));
     expect(b.y - 100).toBeGreaterThan((a.y - 100) * 1.5);
   });
 });

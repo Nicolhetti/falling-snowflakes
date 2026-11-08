@@ -3,40 +3,40 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="falling-leaves: a lightweight, dependency-free canvas animation of falling autumn leaves for any website or React app.">
-<title>falling-leaves</title>
+<meta name="description" content="falling-snowflakes: a lightweight, dependency-free canvas animation of falling snow for any website or React app.">
+<title>falling-snowflakes</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Instrument+Sans:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-  /* Layout: one narrow column under an open October sky; leaves fall over everything. */
+  /* Layout: one narrow column under a winter sky; snow falls over everything. */
   :root {
-    --sky: #e4ecef;
-    --sky-low: #f3eee4;
-    --ink: #1f2a2e;
-    --muted: #55656b;
+    --sky: #8fb8de;
+    --sky-low: #dcebf8;
+    --ink: #10202e;
+    --muted: #3f5568;
     --panel: rgba(255, 255, 255, 0.72);
-    --line: #c9d5d9;
-    --accent: #b8460e;
+    --line: #a9c3da;
+    --accent: #1a5f9e;
     --accent-ink: #ffffff;
-    --code-bg: #1f2a2e;
-    --code-fg: #f1e9dc;
-    --track: #c9d5d9;
+    --code-bg: #10202e;
+    --code-fg: #e8f1fa;
+    --track: #a9c3da;
     --font-display: "Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
     --font-body: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
     --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --sky: #0f1b24; --sky-low: #1d1f22; --ink: #eef1ee; --muted: #a2b0b4;
-      --panel: rgba(22, 34, 43, 0.78); --line: #2d3f4a; --accent: #f08c3a; --accent-ink: #1a1206;
-      --code-bg: #08121a; --code-fg: #f1e9dc; --track: #2d3f4a; color-scheme: dark;
+      --sky: #08111c; --sky-low: #14263a; --ink: #eef3f8; --muted: #a2b4c4;
+      --panel: rgba(18, 32, 48, 0.78); --line: #2b4259; --accent: #7cc0ff; --accent-ink: #06121f;
+      --code-bg: #050d16; --code-fg: #e8f1fa; --track: #2b4259; color-scheme: dark;
     }
   }
   :root[data-theme="dark"] {
-    --sky: #0f1b24; --sky-low: #1d1f22; --ink: #eef1ee; --muted: #a2b0b4;
-    --panel: rgba(22, 34, 43, 0.78); --line: #2d3f4a; --accent: #f08c3a; --accent-ink: #1a1206;
-    --code-bg: #08121a; --code-fg: #f1e9dc; --track: #2d3f4a; color-scheme: dark;
+    --sky: #08111c; --sky-low: #14263a; --ink: #eef3f8; --muted: #a2b4c4;
+    --panel: rgba(18, 32, 48, 0.78); --line: #2b4259; --accent: #7cc0ff; --accent-ink: #06121f;
+    --code-bg: #050d16; --code-fg: #e8f1fa; --track: #2b4259; color-scheme: dark;
   }
 
   html { background: var(--sky-low); }
@@ -126,9 +126,9 @@
     border-radius: 10px; padding: 1rem;
     font: 400 0.82rem/1.6 var(--font-mono);
   }
-  .k { color: #f0a35e; }
-  .s { color: #b5d48c; }
-  .c { color: #8d9aa0; }
+  .k { color: #7cc0ff; }
+  .s { color: #a8e0c4; }
+  .c { color: #8a9db0; }
 
   footer { color: var(--muted); font-size: 0.85rem; }
 </style>
@@ -136,32 +136,31 @@
 <body>
 <div class="wrap">
   <header>
-    <div class="eyebrow">npm package · 8 KB · no dependencies</div>
-    <h1>falling<span>-</span>leaves</h1>
-    <p class="lede">Maple leaves that sway, spin and tumble down any web page, with oak, ginkgo and birch if you want them. Works on its own or as a React component.</p>
+    <div class="eyebrow">npm package · 7 KB · no dependencies</div>
+    <h1>falling<span>-</span>snowflakes</h1>
+    <p class="lede">Snowflakes that drift, sway and slowly turn over as they fall down any web page, in four shapes. Works on its own or as a React component.</p>
     <div class="install">
-      <code id="install-cmd">npm i falling-leaves</code>
+      <code id="install-cmd">npm i falling-snowflakes</code>
       <button id="copy" type="button">Copy</button>
     </div>
   </header>
 
   <div class="note" id="reduced-note" hidden>
-    <p>Your device is set to reduce motion, so the leaves are paused. The package does this for every visitor by default.</p>
-    <button id="show-anyway" type="button">Show the leaves anyway</button>
+    <p>Your device is set to reduce motion, so the snow is paused. The package does this for every visitor by default.</p>
+    <button id="show-anyway" type="button">Show the snow anyway</button>
   </div>
 
   <section class="panel" aria-labelledby="try-heading">
     <h2 id="try-heading">Try it</h2>
-    <div class="row"><label for="count">Leaves</label><input id="count" type="range" min="0" max="150" value="30"><output for="count"></output></div>
-    <div class="row"><label for="wind">Wind</label><input id="wind" type="range" min="-3" max="3" step="0.1" value="0.3"><output for="wind"></output></div>
+    <div class="row"><label for="count">Flakes</label><input id="count" type="range" min="0" max="200" value="50"><output for="count"></output></div>
+    <div class="row"><label for="wind">Wind</label><input id="wind" type="range" min="-3" max="3" step="0.1" value="0.1"><output for="wind"></output></div>
     <div class="row"><label for="speed">Speed</label><input id="speed" type="range" min="0.2" max="4" step="0.1" value="1"><output for="speed"></output></div>
-    <div class="row"><label for="size">Size</label><input id="size" type="range" min="8" max="60" value="22"><output for="size"></output></div>
-    <div class="chips" role="group" aria-label="Leaf shapes">
-      <label class="chip"><input type="checkbox" id="shape-maple" checked> Maple</label>
-      <label class="chip"><input type="checkbox" id="shape-oak"> Oak</label>
-      <label class="chip"><input type="checkbox" id="shape-ginkgo"> Ginkgo</label>
-      <label class="chip"><input type="checkbox" id="shape-birch"> Birch</label>
-      <label class="chip"><input type="checkbox" id="shape-oval"> Oval</label>
+    <div class="row"><label for="size">Size</label><input id="size" type="range" min="6" max="40" value="14"><output for="size"></output></div>
+    <div class="chips" role="group" aria-label="Flake shapes">
+      <label class="chip"><input type="checkbox" id="shape-dendrite" checked> Dendrite</label>
+      <label class="chip"><input type="checkbox" id="shape-star"> Star</label>
+      <label class="chip"><input type="checkbox" id="shape-plate"> Plate</label>
+      <label class="chip"><input type="checkbox" id="shape-dot" checked> Dot</label>
     </div>
     <div class="actions">
       <button id="toggle" type="button">Pause</button>
@@ -175,27 +174,27 @@
       <button role="tab" id="tab-js" aria-selected="true" type="button">JavaScript</button>
       <button role="tab" id="tab-react" aria-selected="false" type="button">React</button>
     </div>
-<pre id="code-js"><span class="k">import</span> { FallingLeaves } <span class="k">from</span> <span class="s">'falling-leaves'</span>;
+<pre id="code-js"><span class="k">import</span> { FallingSnowflakes } <span class="k">from</span> <span class="s">'falling-snowflakes'</span>;
 
 <span class="c">// Covers the whole page</span>
-<span class="k">const</span> leaves = <span class="k">new</span> FallingLeaves({
-  count: <span class="s">40</span>,
-  wind: [<span class="s">0.2</span>, <span class="s">1.2</span>],
-  shapes: [<span class="s">'maple'</span>, <span class="s">'ginkgo'</span>],
+<span class="k">const</span> snow = <span class="k">new</span> FallingSnowflakes({
+  count: <span class="s">80</span>,
+  wind: [<span class="s">0.2</span>, <span class="s">1</span>],
+  shapes: [<span class="s">'dendrite'</span>, <span class="s">'plate'</span>],
 });
 
-leaves.update({ count: <span class="s">80</span> }); <span class="c">// change it live</span>
-leaves.destroy();             <span class="c">// clean up</span></pre>
-<pre id="code-react" hidden><span class="k">import</span> { FallingLeaves } <span class="k">from</span> <span class="s">'falling-leaves/react'</span>;
+snow.update({ count: <span class="s">120</span> }); <span class="c">// change it live</span>
+snow.destroy();              <span class="c">// clean up</span></pre>
+<pre id="code-react" hidden><span class="k">import</span> { FallingSnowflakes } <span class="k">from</span> <span class="s">'falling-snowflakes/react'</span>;
 
 <span class="k">export default function</span> App() {
   <span class="k">return</span> (
     &lt;&gt;
-      &lt;FallingLeaves
+      &lt;FallingSnowflakes
         fullScreen
-        count={<span class="s">40</span>}
+        count={<span class="s">80</span>}
         speed={[<span class="s">0.8</span>, <span class="s">1.6</span>]}
-        shapes={[<span class="s">'oak'</span>, <span class="s">'birch'</span>]}
+        shapes={[<span class="s">'star'</span>, <span class="s">'dot'</span>]}
       /&gt;
       &lt;main&gt;…&lt;/main&gt;
     &lt;/&gt;
@@ -203,26 +202,26 @@ leaves.destroy();             <span class="c">// clean up</span></pre>
 }</pre>
   </section>
 
-  <footer>MIT licensed. Leaves pause automatically for people who prefer reduced motion, and taps pass straight through them.</footer>
+  <footer>MIT licensed. Snow pauses automatically for people who prefer reduced motion, and taps pass straight through it.</footer>
 </div>
 
 <script type="module">
-  import { FallingLeaves } from '../dist/index.js';
+  import { FallingSnowflakes } from '../dist/index.js';
 
   (function () {
     var $ = function (id) { return document.getElementById(id); };
-    var SHAPES = ['maple', 'oak', 'ginkgo', 'birch', 'oval'];
+    var SHAPES = ['dendrite', 'star', 'plate', 'dot'];
     var small = window.innerWidth < 500;
-    var defaults = { count: small ? 22 : 30, wind: 0.3, speed: 1, size: small ? 20 : 22 };
+    var defaults = { count: small ? 35 : 50, wind: 0.1, speed: 1, size: small ? 12 : 14 };
 
-    var leaves = new FallingLeaves();
+    var snow = new FallingSnowflakes();
     var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduced) $('reduced-note').hidden = false;
 
     var running = !reduced;
     function setRunning(on) {
       running = on;
-      if (on) leaves.start(); else leaves.stop();
+      if (on) snow.start(); else snow.stop();
       $('toggle').textContent = on ? 'Pause' : 'Play';
     }
     setRunning(running);
@@ -230,8 +229,8 @@ leaves.destroy();             <span class="c">// clean up</span></pre>
     function apply() {
       var wind = +$('wind').value, speed = +$('speed').value, size = +$('size').value;
       var shapes = SHAPES.filter(function (s) { return $('shape-' + s).checked; });
-      if (!shapes.length) { $('shape-maple').checked = true; shapes.push('maple'); }
-      leaves.update({
+      if (!shapes.length) { $('shape-dendrite').checked = true; shapes.push('dendrite'); }
+      snow.update({
         count: +$('count').value,
         wind: [wind - 0.5, wind + 0.5],
         speed: [speed * 0.6, speed * 1.4],
@@ -244,17 +243,17 @@ leaves.destroy();             <span class="c">// clean up</span></pre>
     }
     function reset() {
       Object.keys(defaults).forEach(function (k) { $(k).value = defaults[k]; });
-      SHAPES.forEach(function (s) { $('shape-' + s).checked = s === 'maple'; });
+      SHAPES.forEach(function (s) { $('shape-' + s).checked = s === 'dendrite' || s === 'dot'; });
       apply();
     }
     document.querySelectorAll('input').forEach(function (i) { i.addEventListener('input', apply); });
     $('reset').addEventListener('click', reset);
     $('toggle').addEventListener('click', function () {
-      if (reduced) { leaves.update({ respectReducedMotion: false }); $('reduced-note').hidden = true; reduced = false; }
+      if (reduced) { snow.update({ respectReducedMotion: false }); $('reduced-note').hidden = true; reduced = false; }
       setRunning(!running);
     });
     $('show-anyway').addEventListener('click', function () {
-      leaves.update({ respectReducedMotion: false });
+      snow.update({ respectReducedMotion: false });
       reduced = false;
       $('reduced-note').hidden = true;
       setRunning(true);
@@ -269,7 +268,7 @@ leaves.destroy();             <span class="c">// clean up</span></pre>
         var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
         btn.textContent = 'Selected';
       };
-      try { navigator.clipboard.writeText('npm i falling-leaves').then(done, fallback); } catch (e) { fallback(); }
+      try { navigator.clipboard.writeText('npm i falling-snowflakes').then(done, fallback); } catch (e) { fallback(); }
     });
 
     function showTab(which) {

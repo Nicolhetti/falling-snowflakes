@@ -1,11 +1,11 @@
 import { useEffect, useRef, type CSSProperties } from 'react';
-import { FallingLeaves as Engine, type FallingLeavesOptions } from './falling-leaves';
+import { FallingSnowflakes as Engine, type FallingSnowflakesOptions } from './falling-snowflakes';
 
-export interface FallingLeavesProps extends Omit<FallingLeavesOptions, 'container'> {
+export interface FallingSnowflakesProps extends Omit<FallingSnowflakesOptions, 'container'> {
   /**
    * Cover the whole page instead of filling the parent element.
    * When false (the default), the parent element needs `position: relative`
-   * (or any position other than static) for the leaves to stay inside it.
+   * (or any position other than static) for the flakes to stay inside it.
    */
   fullScreen?: boolean;
   className?: string;
@@ -13,10 +13,10 @@ export interface FallingLeavesProps extends Omit<FallingLeavesOptions, 'containe
 }
 
 /**
- * Falling leaves for React. By default it fills its parent element;
+ * Falling flakes for React. By default it fills its parent element;
  * pass `fullScreen` to cover the whole page.
  */
-export function FallingLeaves({ fullScreen = false, className, style, ...options }: FallingLeavesProps) {
+export function FallingSnowflakes({ fullScreen = false, className, style, ...options }: FallingSnowflakesProps) {
   const ref = useRef<HTMLDivElement>(null);
   const engine = useRef<Engine | null>(null);
   const latest = useRef(options);
@@ -53,5 +53,5 @@ export function FallingLeaves({ fullScreen = false, className, style, ...options
   );
 }
 
-export type { FallingLeavesOptions, LeafShape, Range } from './index';
-export { DEFAULT_COLORS } from './falling-leaves';
+export type { FallingSnowflakesOptions, FlakeShape, Range } from './index';
+export { DEFAULT_COLORS } from './falling-snowflakes';

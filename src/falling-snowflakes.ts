@@ -1,30 +1,30 @@
-import { createLeaf, DEFAULT_PROFILE, maxSize, pick, stepLeaf, type Leaf, type MotionOptions, type MotionProfile } from './leaf';
-import { createLeafSprite, DEFAULT_SHAPES, SHAPE_COLORS, SHAPE_MOTION, type LeafShape } from './sprites';
+import { createFlake, DEFAULT_PROFILE, maxSize, pick, stepFlake, type Flake, type MotionOptions, type MotionProfile } from './flake';
+import { createFlakeSprite, DEFAULT_SHAPES, SHAPE_MOTION, type FlakeShape } from './sprites';
 
-export interface FallingLeavesOptions extends Partial<MotionOptions> {
+export interface FallingSnowflakesOptions extends Partial<MotionOptions> {
   /**
-   * Element to fill with leaves. Leave it out to cover the whole page
+   * Element to fill with flakes. Leave it out to cover the whole page
    * (a fixed full-screen layer that clicks pass through).
    */
   container?: HTMLElement;
-  /** How many leaves are on screen at once. Default 30. */
+  /** How many flakes are on screen at once. Default 50. */
   count?: number;
   /**
-   * Leaf colors. Each leaf is drawn in one of these. By default ginkgo
-   * leaves are gold and the others use a red-orange autumn palette.
+   * Flake colors. Each flake is drawn in one of these. By default they
+   * are white and pale blues.
    */
   colors?: string[];
   /**
-   * Built-in leaf shapes to mix: `'maple'`, `'oak'`, `'ginkgo'`, `'birch'`
-   * and `'oval'`. Default `['maple']`.
+   * Built-in flake shapes to mix: `'dendrite'`, `'star'`, `'plate'` and
+   * `'dot'`. Default `['dendrite', 'dot']`.
    */
-  shapes?: LeafShape[];
+  shapes?: FlakeShape[];
   /**
-   * Your own leaf pictures. When set, these are drawn instead of the
+   * Your own flake pictures. When set, these are drawn instead of the
    * built-in shapes, and `colors` and `shapes` are ignored.
    */
   images?: CanvasImageSource[];
-  /** Leaf opacity, 0–1. Default 1. */
+  /** Flake opacity, 0–1. Default 1. */
   opacity?: number;
   /** z-index of the canvas. Default 9999 for full page, 0 inside a container. */
   zIndex?: number;
@@ -37,30 +37,30 @@ export interface FallingLeavesOptions extends Partial<MotionOptions> {
   autoStart?: boolean;
 }
 
-export const DEFAULT_COLORS = ['#d9480f', '#e8590c', '#f08c00', '#c92a2a', '#a61e4d', '#b5651d', '#e0a800'];
+export const DEFAULT_COLORS = ['#ffffff', '#eaf5ff', '#d4e9ff', '#bcdcff'];
 
 const DEFAULTS: Required<MotionOptions> & { count: number; opacity: number } = {
-  count: 30,
-  size: [14, 30],
-  speed: [0.6, 1.5],
-  wind: [-0.3, 0.8],
-  sway: [0.4, 1.4],
-  rotationSpeed: [-1.5, 1.5],
+  count: 50,
+  size: [8, 22],
+  speed: [0.5, 1.3],
+  wind: [-0.3, 0.5],
+  sway: [0.3, 1],
+  rotationSpeed: [-0.6, 0.6],
   opacity: 1,
 };
 
-/** Frames longer than this (e.g. after switching tabs) are capped so leaves don't jump. */
+/** Frames longer than this (e.g. after switching tabs) are capped so flakes don't jump. */
 const MAX_FRAME_STEP = 3;
 
-export class FallingLeaves {
-  private options: FallingLeavesOptions;
+export class FallingSnowflakes {
+  private options: FallingSnowflakesOptions;
   private readonly canvas: HTMLCanvasElement;
   private readonly ctx: CanvasRenderingContext2D | null;
   private readonly container: HTMLElement;
   private readonly fullPage: boolean;
-  private leaves: Leaf[] = [];
+  private flakes: Flake[] = [];
   private drawables: CanvasImageSource[] = [];
-  /** How each drawable's leaves move, in the same order as `drawables`. */
+  /** How each drawable's flakes move, in the same order as `drawables`. */
   private profiles: MotionProfile[] = [];
   private spriteKey = '';
   private width = 0;
@@ -71,14 +71,14 @@ export class FallingLeaves {
   private resizeObserver?: ResizeObserver;
   private reducedMotion?: MediaQueryList;
 
-  constructor(options: FallingLeavesOptions = {}) {
+  constructor(options: FallingSnowflakesOptions = {}) {
     this.options = { ...options };
     this.fullPage = !options.container;
     this.container = options.container ?? document.body;
 
     this.canvas = document.createElement('canvas');
     this.canvas.setAttribute('aria-hidden', 'true');
-    this.canvas.dataset.fallingLeaves = '';
+    this.canvas.dataset.fallingSnowflakes = '';
     Object.assign(this.canvas.style, {
       position: this.fullPage ? 'fixed' : 'absolute',
       inset: '0',
@@ -119,14 +119,14 @@ export class FallingLeaves {
     this.frame = requestAnimationFrame(this.tick);
   }
 
-  /** Pauses the animation and leaves the leaves where they are. */
+  /** Pauses the animation and flakes the flakes where they are. */
   stop(): void {
     this.running = false;
     cancelAnimationFrame(this.frame);
   }
 
-  /** Changes options while running. Leaves pick up the new values straight away. */
-  update(options: Partial<Omit<FallingLeavesOptions, 'container'>>): void {
+  /** Changes options while running. Flakes pick up the new values straight away. */
+  update(options: Partial<Omit<FallingSnowflakesOptions, 'container'>>): void {
     this.options = { ...this.options, ...options };
     if (options.zIndex !== undefined) this.canvas.style.zIndex = String(options.zIndex);
     this.refreshDrawables();
@@ -141,7 +141,7 @@ export class FallingLeaves {
     window.removeEventListener('resize', this.resize);
     this.reducedMotion?.removeEventListener?.('change', this.onReducedMotionChange);
     this.canvas.remove();
-    this.leaves = [];
+    this.flakes = [];
   }
 
   private get motion(): MotionOptions {
@@ -180,7 +180,7 @@ export class FallingLeaves {
     this.ctx?.setTransform(dpr, 0, 0, dpr, 0, 0);
   };
 
-  /** Rebuilds the leaf pictures, but only when colors, shapes or images changed. */
+  /** Rebuilds the flake pictures, but only when colors, shapes or images changed. */
   private refreshDrawables(): void {
     const { images, colors, shapes = DEFAULT_SHAPES } = this.options;
     if (images && images.length > 0) {
@@ -195,8 +195,8 @@ export class FallingLeaves {
     this.drawables = [];
     this.profiles = [];
     for (const shape of shapes) {
-      for (const color of colors ?? SHAPE_COLORS[shape] ?? DEFAULT_COLORS) {
-        this.drawables.push(createLeafSprite(color, shape));
+      for (const color of colors ?? DEFAULT_COLORS) {
+        this.drawables.push(createFlakeSprite(color, shape));
         this.profiles.push(SHAPE_MOTION[shape] ?? DEFAULT_PROFILE);
       }
     }
@@ -205,15 +205,15 @@ export class FallingLeaves {
   private syncCount(anywhere: boolean): void {
     const count = Math.max(0, Math.floor(this.options.count ?? DEFAULTS.count));
     const n = this.drawables.length;
-    while (this.leaves.length < count) {
-      const leaf = createLeaf(this.motion, this.width, this.height, n, Math.random, true);
-      // Leaves added later start spread out above the screen, so they don't all arrive at once.
-      if (!anywhere) leaf.y -= this.height + maxSize(this.motion.size);
-      this.leaves.push(leaf);
+    while (this.flakes.length < count) {
+      const flake = createFlake(this.motion, this.width, this.height, n, Math.random, true);
+      // Flakes added later start spread out above the screen, so they don't all arrive at once.
+      if (!anywhere) flake.y -= this.height + maxSize(this.motion.size);
+      this.flakes.push(flake);
     }
-    this.leaves.length = count;
-    // If there are now fewer pictures, point leaves at ones that still exist.
-    for (const leaf of this.leaves) if (leaf.variant >= n) leaf.variant = leaf.variant % Math.max(1, n);
+    this.flakes.length = count;
+    // If there are now fewer pictures, point flakes at ones that still exist.
+    for (const flake of this.flakes) if (flake.variant >= n) flake.variant = flake.variant % Math.max(1, n);
   }
 
   private tick = (time: number): void => {
@@ -223,8 +223,8 @@ export class FallingLeaves {
 
     const motion = this.motion;
     const n = this.drawables.length;
-    for (const leaf of this.leaves) {
-      stepLeaf(leaf, dt, motion, this.width, this.height, n, Math.random, this.profiles[leaf.variant]);
+    for (const flake of this.flakes) {
+      stepFlake(flake, dt, motion, this.width, this.height, n, Math.random, this.profiles[flake.variant]);
     }
     this.draw();
     this.frame = requestAnimationFrame(this.tick);
@@ -238,18 +238,18 @@ export class FallingLeaves {
 
     const sizeRange = this.motion.size;
     const biggest = maxSize(sizeRange);
-    for (const leaf of this.leaves) {
-      const img = this.drawables[leaf.variant];
+    for (const flake of this.flakes) {
+      const img = this.drawables[flake.variant];
       if (!img) continue;
-      const size = pick(sizeRange, leaf.rSize);
-      if (leaf.y < -biggest || leaf.y > this.height + biggest) continue;
+      const size = pick(sizeRange, flake.rSize);
+      if (flake.y < -biggest || flake.y > this.height + biggest) continue;
 
       ctx.save();
-      ctx.translate(leaf.x, leaf.y);
-      const rock = (this.profiles[leaf.variant] ?? DEFAULT_PROFILE).rock * Math.cos(leaf.swayPhase);
-      ctx.rotate(((leaf.rotation + rock) * Math.PI) / 180);
-      // Squash one way to fake the leaf tumbling over in 3D.
-      ctx.scale(Math.cos(leaf.flipPhase), 1);
+      ctx.translate(flake.x, flake.y);
+      const rock = (this.profiles[flake.variant] ?? DEFAULT_PROFILE).rock * Math.cos(flake.swayPhase);
+      ctx.rotate(((flake.rotation + rock) * Math.PI) / 180);
+      // Squash one way to fake the flake slowly turning over in 3D, never fully edge-on.
+      ctx.scale(0.35 + 0.65 * Math.abs(Math.cos(flake.flipPhase)), 1);
       ctx.drawImage(img, -size / 2, -size / 2, size, size);
       ctx.restore();
     }

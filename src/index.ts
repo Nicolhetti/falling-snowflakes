@@ -1,3 +1,3 @@
-export { FallingLeaves, DEFAULT_COLORS, type FallingLeavesOptions } from './falling-leaves';
-export type { Range } from './leaf';
-export { LEAF_SHAPES, DEFAULT_SHAPES, type LeafShape } from './sprites';
+export { FallingSnowflakes, DEFAULT_COLORS, type FallingSnowflakesOptions } from './falling-snowflakes';
+export type { Range } from './flake';
+export { FLAKE_SHAPES, DEFAULT_SHAPES, type FlakeShape } from './sprites';

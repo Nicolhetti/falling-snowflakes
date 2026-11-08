@@ -1,31 +1,33 @@
-# falling-leaves 🍂
+# falling-snowflakes ❄️
 
-**[Live demo](https://ernkerr.github.io/falling-leaves/)**
+**[Live demo](https://nicolhetti.github.io/falling-snowflakes/)**
 
-Falling autumn leaves for any website. Small (~8 KB minified), no dependencies, drawn on a canvas, with an optional React component.
+Falling snow for any website. Small (~7 KB minified), no dependencies, drawn on a canvas, with an optional React component.
 
-- Maple leaves by default, plus oak, ginkgo, birch and oval shapes, or your own leaf images
-- Leaves sway, spin and tumble as they fall
+- Feathery dendrite, star and plate-shaped snowflakes, plus soft round flakes, or your own flake images
+- Flakes drift, sway and slowly turn over as they fall
 - Change options while it runs, with no restart
 - Doesn't animate for people whose system asks for reduced motion
 - Sharp on high-DPI screens, and clicks pass straight through
 
+Forked from [ernkerr/falling-leaves](https://github.com/ernkerr/falling-leaves), the same engine with snowflakes instead of autumn leaves.
+
 ## Install
 
 ```sh
-npm install falling-leaves
+npm install falling-snowflakes
 ```
 
 ## Vanilla JS
 
 ```js
-import { FallingLeaves } from 'falling-leaves';
+import { FallingSnowflakes } from 'falling-snowflakes';
 
 // Covers the whole page
-const leaves = new FallingLeaves();
+const snow = new FallingSnowflakes();
 
 // Or only inside one element
-const hero = new FallingLeaves({ container: document.querySelector('.hero') });
+const hero = new FallingSnowflakes({ container: document.querySelector('.hero') });
 ```
 
 | Method | What it does |
@@ -38,51 +40,53 @@ const hero = new FallingLeaves({ container: document.querySelector('.hero') });
 ## React
 
 ```jsx
-import { FallingLeaves } from 'falling-leaves/react';
+import { FallingSnowflakes } from 'falling-snowflakes/react';
 
 // Covers the whole page
-<FallingLeaves fullScreen />
+<FallingSnowflakes fullScreen />
 
 // Fills its parent. The parent needs position: relative.
 <div style={{ position: 'relative', height: 400 }}>
-  <FallingLeaves count={50} wind={[0.5, 2]} />
+  <FallingSnowflakes count={80} wind={[0.2, 1]} />
 </div>
 
-// Every option is a prop. Changing a prop updates the leaves without restarting.
-<FallingLeaves fullScreen shapes={['ginkgo']} speed={[1, 2]} wind={[-1, 1]} />
+// Every option is a prop. Changing a prop updates the flakes without restarting.
+<FallingSnowflakes fullScreen shapes={['plate']} speed={[1, 2]} wind={[-1, 1]} />
 ```
 
 It's safe to use with server rendering: nothing runs until the component mounts in the browser. In the Next.js App Router, use it inside a `'use client'` component.
 
 ## Options
 
-Range options take either one number or a `[min, max]` pair, and each leaf picks its own value from the range.
+Range options take either one number or a `[min, max]` pair, and each flake picks its own value from the range.
 
 | Option | Default | Description |
 | --- | --- | --- |
-| `count` | `30` | How many leaves are on screen |
-| `size` | `[14, 30]` | Leaf size in pixels |
-| `speed` | `[0.6, 1.5]` | Fall speed in pixels per frame (at 60fps) |
-| `wind` | `[-0.3, 0.8]` | Sideways drift. Negative blows left |
-| `sway` | `[0.4, 1.4]` | How far leaves swing side to side |
-| `rotationSpeed` | `[-1.5, 1.5]` | Spin in degrees per frame |
-| `colors` | autumn palette | Leaf colors (any CSS color). By default ginkgo leaves are gold |
-| `shapes` | `['maple']` | Which built-in shapes to use: `'maple'`, `'oak'`, `'ginkgo'`, `'birch'`, `'oval'` |
-| `images` | — | Your own leaf images (`HTMLImageElement`, canvas, etc.). Replaces `colors` and `shapes` |
-| `opacity` | `1` | Leaf opacity |
+| `count` | `50` | How many flakes are on screen |
+| `size` | `[8, 22]` | Flake size in pixels |
+| `speed` | `[0.5, 1.3]` | Fall speed in pixels per frame (at 60fps) |
+| `wind` | `[-0.3, 0.5]` | Sideways drift. Negative blows left |
+| `sway` | `[0.3, 1]` | How far flakes swing side to side |
+| `rotationSpeed` | `[-0.6, 0.6]` | Spin in degrees per frame |
+| `colors` | white and pale blues | Flake colors (any CSS color) |
+| `shapes` | `['dendrite', 'dot']` | Which built-in shapes to use: `'dendrite'`, `'star'`, `'plate'`, `'dot'` |
+| `images` | — | Your own flake images (`HTMLImageElement`, canvas, etc.). Replaces `colors` and `shapes` |
+| `opacity` | `1` | Flake opacity |
 | `zIndex` | `9999` full page, `0` in a container | Canvas z-index |
 | `respectReducedMotion` | `true` | Don't animate when the user's system asks for reduced motion |
 | `autoStart` | `true` | Start animating straight away |
 | `container` | page | Element to fill. Vanilla JS only |
 | `fullScreen` | `false` | Cover the whole page. React only |
 
+White flakes need a darker background to show up. On a light page, pass your own `colors`.
+
 ### Your own images
 
 ```js
-const maple = new Image();
-maple.src = '/maple.png';
+const flake = new Image();
+flake.src = '/flake.png';
 
-new FallingLeaves({ images: [maple], size: [20, 40] });
+new FallingSnowflakes({ images: [flake], size: [20, 40] });
 ```
 
 ## Development

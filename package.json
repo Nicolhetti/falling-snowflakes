@@ -1,11 +1,11 @@
 {
-  "name": "falling-leaves",
+  "name": "falling-snowflakes",
   "version": "0.1.0",
-  "description": "A lightweight, dependency-free canvas animation of falling autumn leaves. Works with vanilla JS and React.",
+  "description": "A lightweight, dependency-free canvas animation of falling snowflakes. Works with vanilla JS and React.",
   "keywords": [
-    "leaves",
-    "autumn",
-    "fall",
+    "snow",
+    "snowflakes",
+    "winter",
     "falling",
     "animation",
     "canvas",
@@ -18,7 +18,7 @@
   "author": "Erin Kerr",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ernkerr/falling-leaves.git"
+    "url": "git+https://github.com/Nicolhetti/falling-snowflakes.git"
   },
   "type": "module",
   "sideEffects": false,
